@@ -1,6 +1,8 @@
 # MQTT Client for WinCC Unified
 It is a Custom Web Control for SIEMENS WinCC Unified to connect to MQTT brokers.
 
+! You have to download the webcc.min.js from SIEMENS and save it to the control/js directory !  
+
 Create a Custom-Web.Control zip file from this directory:   
 > cd winccua-mqtt-client\Custom-Web-Control\{9117B3FF-7043-5BE4-B472-EA44D2488BF8}
 
