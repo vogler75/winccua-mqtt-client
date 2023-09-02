@@ -48,7 +48,7 @@
 			document.getElementById('StatusText').textContent = t;
 			console.log(t);
 			let r = {"code": responseObject.errorCode, "message": responseObject.errorMessage};
-			WebCC.Events.fire("onConnectionLost", JSON.stringify(r));
+			WebCC.Events.fire("onConnectionLost", JSON.stringify(r, null, 2));
 		}
 
 		function onMessageArrived(message) {
@@ -58,7 +58,7 @@
 			}
 			
 			let r = {"topic": message.topic, "payload": message.payloadString, "qos": message.qos, "retained": message.retained, "duplicate": message.duplicate};
-			WebCC.Events.fire("onMessageArrived", JSON.stringify(r));
+			WebCC.Events.fire("onMessageArrived", JSON.stringify(r, null, 2));
 		}
 
 		function publishMessage(message) {
