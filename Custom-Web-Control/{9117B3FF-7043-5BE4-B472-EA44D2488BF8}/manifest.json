@@ -19,13 +19,13 @@
 		"contracts": {
 			"api": {	
 				"methods": {
-					"Send": {
+					"Publish": {
 						"parameters": {
 							"message": {
 								"type": "object"
 							}							
 						},
-						"description": "Send message"
+						"description": "Publish message"
 					}
 				},			
 				"events": {
@@ -44,7 +44,7 @@
 					"onMessageArrived": {
 						"arguments": {
 							"message": {
-								"type": "object"
+								"type": "string"
 							}
 						},
 						"description": "On message arrived event"

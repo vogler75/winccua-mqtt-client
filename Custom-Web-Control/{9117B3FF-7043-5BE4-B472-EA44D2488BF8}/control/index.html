@@ -58,7 +58,7 @@
 			}
 			
 			let r = {"topic": message.topic, "payload": message.payloadString, "qos": message.qos, "retained": message.retained, "duplicate": message.duplicate};
-			WebCC.Events.fire("onMessageArrived", r);
+			WebCC.Events.fire("onMessageArrived", JSON.stringify(r));
 		}
 
 		function publishMessage(message) {
@@ -109,8 +109,8 @@
 			{
 				// Methods
 				methods: {
-					Send: function (message) {
-						console.log("Send");
+					Publish: function (message) {
+						console.log("Publish");
 						publishMessage(message);
 					}					
 				},		
