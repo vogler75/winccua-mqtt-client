@@ -1,0 +1,83 @@
+{
+	"mver": "1.2.0",
+	"control": {
+		"identity": {
+			"name": "MQTT",
+			"version": "0.9",
+			"displayname": "MQTT",
+			"icon": "./assets/logo.ico",
+			"type": "guid://9117B3FF-7043-5BE4-B472-EA44D2488BF8",
+			"start": "./control/index.html"
+		},
+		"metadata": {
+			"author": "Andreas Vogler",
+			"keywords": [
+				"MQTT",
+				"MQTT-Client"
+			]
+		},
+		"contracts": {
+			"api": {	
+				"methods": {
+					"Publish": {
+						"parameters": {
+							"message": {
+								"type": "object"
+							}							
+						},
+						"description": "Publish message"
+					}
+				},			
+				"events": {
+					"onConnect": {
+						"arguments": {							
+						}
+					},
+					"onConnectionLost": {
+						"arguments": {
+							"message": {
+								"type": "string"
+							}							
+						},
+						"description": "On connection lost event"
+					},										
+					"onMessageArrived": {
+						"arguments": {
+							"message": {
+								"type": "string"
+							}
+						},
+						"description": "On message arrived event"
+					}					
+				},
+				"properties": {
+					"ClientId": {
+						"type": "string",
+						"description": "Client Id",
+						"default": ""
+					},						
+					"BrokerUrl": {
+						"type": "string",
+						"description": "MQTT Url",
+						"default": "wss://broker.example.com:8083/mqtt"
+					},
+					"UseSSL": {
+						"type": "boolean",
+						"description": "Use SSL",
+						"default": true
+					},
+					"Topics": {
+						"type": "string",
+						"description": "Subscribe to topics",
+						"default": "['example1', 'example2']"
+					},
+					"Connect": {
+						"type": "boolean",
+						"description": "Connect connection",
+						"default": true
+					}
+				}
+			}
+		}
+	}
+}

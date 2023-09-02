@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+	<meta charset='utf-8'>
+	<title>GraphQL</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+	<link rel='stylesheet' href='./styles.css' />
+
+	<script src='./js/webcc.min.js'></script>
+	<script src='./js/paho-mqtt-min.js'></script>
+
+</head>
+
+<body>
+    <div>
+      <h2>Status</h2>
+      <p id="StatusText"></p>
+    </div>
+
+	<script>
+		var g_client = null;		
+
+		function createClient() {
+			console.log(`Create MQTT Client ${WebCC.Properties.BrokerUrl} ${WebCC.Properties.ClientId}`);
+			g_client = new Paho.MQTT.Client(WebCC.Properties.BrokerUrl, WebCC.Properties.ClientId);
+			g_client.onConnectionLost = onConnectionLost;
+			g_client.onMessageArrived = onMessageArrived;
+			g_client.connect({ useSSL: WebCC.Properties.UseSSL, onSuccess: onConnect });
+		}
+		
+		function onConnect() {
+			let t = "Connected to MQTT broker";
+			document.getElementById('StatusText').textContent = t;
+			console.log(t);
+			WebCC.Events.fire("onConnnect");
+
+			topics = JSON.parse(WebCC.Properties.Topics);
+			for (const element of topics) {
+				g_client.subscribe(element);
+				console.log(`Subscribe to ${element}`);
+			}			
+		}
+
+		function onConnectionLost(responseObject) {
+			let t = `Connection lost: ${responseObject.errorMessage}`;
+			document.getElementById('StatusText').textContent = t;
+			console.log(t);
+			let r = {"code": responseObject.errorCode, "message": responseObject.errorMessage};
+			WebCC.Events.fire("onConnectionLost", JSON.stringify(r));
+		}
+
+		function onMessageArrived(message) {
+			let r = {"topic": message.topic, "payload": message.payloadString, "qos": message.qos, "retained": message.retained, "duplicate": message.duplicate};
+			WebCC.Events.fire("onMessageArrived", JSON.stringify(r));
+
+			//let t = `Received message on topic ${message.destinationName}: ${message.payloadString}`;
+			//console.log(t);
+		}
+
+		function publishMessage(message) {
+			if (!message.topic || !message.payload) return;
+			const data = new Paho.MQTT.Message(message.payload);
+			data.destinationName = message.topic
+			if (message.qos) data.qos = message.qos;
+			if (message.retained) data.retained = message.retained;
+			g_client.send(data);
+			
+			//let t = `Published message on topic ${message.topic}: ${message.payload}`;
+			//console.log(t);
+		}
+
+		function setProperty(data) {
+			switch (data.key) {
+				case 'Connect':
+					if (data.value) {						
+						createClient();
+					} else {
+						if (g_client) g_client.disconnect();
+					}
+					break;		
+			}			
+		}
+		
+		////////////////////////////////////////////
+		// Initialize the custom control
+		WebCC.start(
+			// callback function; occurs when the connection is done or failed. 
+			// "result" is a boolean defining if the connection was successfull or not.
+			function (result) {
+				if (result) {
+					console.log('Connected successfully.');
+						// Subscribe for value changes
+						WebCC.onPropertyChanged.subscribe(setProperty);
+						if (WebCC.Properties.Connect) {
+							createClient();
+						}
+				}
+				else {
+					console.log('Connection failed.');
+				}
+			},
+			// contract (see also manifest.json)
+			{
+				// Methods
+				methods: {
+					Publish: function (message) {
+						publishMessage(message);
+					}					
+				},		
+				// Events
+				events: ['onConnect', 'onConnectionLost', 'onMessageArrived'],
+				// Properties
+				properties: {
+					ClientId: {},					
+					BrokerUrl: {},
+					UseSSL: {},
+					Topics: {},
+					Connect: {}
+				}
+			},
+			// placeholder to include additional Unified dependencies (not used in this example)
+			[],
+			// connection timeout
+			10000
+		);      
+	</script>
+
+</body>
+
+</html>
