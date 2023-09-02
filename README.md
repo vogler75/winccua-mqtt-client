@@ -10,6 +10,8 @@ Copy the {9117B3FF-7043-5BE4-B472-EA44D2488BF8}.zip file to your project into th
 
 Then you can drag and drop it to your screen and configure it.
 
+The [Eclipse Paho JavaScript Client](https://eclipse.dev/paho/index.php?page=clients/js/index.php) is used in this Custom-Web-Control. 
+
 ## Properties
 * BrokerUrl: Url to your MQTT Broker, for example ws://192.168.1.1:9001/mqtt
 * ClientId: MQTT Client Id
