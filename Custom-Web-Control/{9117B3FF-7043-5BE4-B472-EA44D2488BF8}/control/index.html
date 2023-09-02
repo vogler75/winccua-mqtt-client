@@ -52,23 +52,27 @@
 		}
 
 		function onMessageArrived(message) {
+			if (WebCC.Properties.Debug) {
+				let t = `Received message on topic ${message.destinationName}: ${message.payloadString}`;
+				console.log(t);
+			}
+			
 			let r = {"topic": message.topic, "payload": message.payloadString, "qos": message.qos, "retained": message.retained, "duplicate": message.duplicate};
-			WebCC.Events.fire("onMessageArrived", JSON.stringify(r));
-
-			//let t = `Received message on topic ${message.destinationName}: ${message.payloadString}`;
-			//console.log(t);
+			WebCC.Events.fire("onMessageArrived", r);
 		}
 
 		function publishMessage(message) {
+			if (WebCC.Properties.Debug) {
+				let t = `Published message on topic ${message.topic}: ${message.payload}`;
+				console.log(t);
+			}
+
 			if (!message.topic || !message.payload) return;
 			const data = new Paho.MQTT.Message(message.payload);
 			data.destinationName = message.topic
 			if (message.qos) data.qos = message.qos;
 			if (message.retained) data.retained = message.retained;
-			g_client.send(data);
-			
-			//let t = `Published message on topic ${message.topic}: ${message.payload}`;
-			//console.log(t);
+			g_client.send(data);			
 		}
 
 		function setProperty(data) {
@@ -105,7 +109,8 @@
 			{
 				// Methods
 				methods: {
-					Publish: function (message) {
+					Send: function (message) {
+						console.log("Send");
 						publishMessage(message);
 					}					
 				},		
@@ -117,7 +122,8 @@
 					BrokerUrl: {},
 					UseSSL: {},
 					Topics: {},
-					Connect: {}
+					Connect: {},
+					Debug: {}
 				}
 			},
 			// placeholder to include additional Unified dependencies (not used in this example)

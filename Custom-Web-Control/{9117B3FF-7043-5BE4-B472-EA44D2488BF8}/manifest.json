@@ -19,13 +19,13 @@
 		"contracts": {
 			"api": {	
 				"methods": {
-					"Publish": {
+					"Send": {
 						"parameters": {
 							"message": {
 								"type": "object"
 							}							
 						},
-						"description": "Publish message"
+						"description": "Send message"
 					}
 				},			
 				"events": {
@@ -44,7 +44,7 @@
 					"onMessageArrived": {
 						"arguments": {
 							"message": {
-								"type": "string"
+								"type": "object"
 							}
 						},
 						"description": "On message arrived event"
@@ -75,7 +75,12 @@
 						"type": "boolean",
 						"description": "Connect connection",
 						"default": true
-					}
+					},
+					"Debug": {
+						"type": "boolean",
+						"description": "Debug messages",
+						"default": false
+					}					
 				}
 			}
 		}
