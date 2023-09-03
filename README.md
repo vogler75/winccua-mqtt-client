@@ -15,12 +15,14 @@ Then you can drag and drop it to your screen and configure it.
 The [Eclipse Paho JavaScript Client](https://eclipse.dev/paho/index.php?page=clients/js/index.php) is used in this Custom-Web-Control. 
 
 ## Properties
-* BrokerUrl: Url to your MQTT Broker, for example ws://192.168.1.1:9001/mqtt
-* ClientId: MQTT Client Id
-* Connect: Connect to MQTT Broker if it is set to true
-* Debug: Some debug messages will be written to the browser console if set to true
-* Topics: List of topics to which you want to subscribe. Example: ["test/+/value", "motor/#"]
-* UseSSL: SSL connection will be used if set to true
+* BrokerUrl: Url to your MQTT Broker, for example ws://192.168.1.1:9001/mqtt  
+* ClientId: MQTT Client Id  
+* Connect: Connect to MQTT Broker if it is set to true  
+* Debug: Some debug messages will be written to the browser console if set to true  
+* Topics: List of topics to which you want to subscribe. Example: ["test/+/value", "motor/#"]  
+* UseSSL: SSL connection will be used if set to true  
+* Username: Username to connect to the MQTT broker  
+* Password: Password to connect to the MQTT broker  
 
 ## Events
 * onConnect: fired when the connection is created.

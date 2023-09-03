@@ -28,7 +28,13 @@
 			g_client = new Paho.MQTT.Client(WebCC.Properties.BrokerUrl, WebCC.Properties.ClientId);
 			g_client.onConnectionLost = onConnectionLost;
 			g_client.onMessageArrived = onMessageArrived;
-			g_client.connect({ useSSL: WebCC.Properties.UseSSL, onSuccess: onConnect });
+			options = { 
+				useSSL: WebCC.Properties.UseSSL, 
+				onSuccess: onConnect 
+			}
+			if (WebCC.Properties.Username) options.Username = WebCC.Properties.Username;
+			if (WebCC.Properties.Password) options.Password = WebCC.Properties.Password;
+			g_client.connect(options);
 		}
 		
 		function onConnect() {
@@ -111,7 +117,6 @@
 				// Methods
 				methods: {
 					Publish: function (message) {
-						console.log("Publish");
 						publishMessage(message);
 					}					
 				},		

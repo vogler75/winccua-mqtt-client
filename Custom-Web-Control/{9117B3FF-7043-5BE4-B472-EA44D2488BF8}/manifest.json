@@ -61,6 +61,16 @@
 						"description": "MQTT Url",
 						"default": "wss://broker.example.com:8083/mqtt"
 					},
+					"Username": {
+						"type": "string",
+						"description": "Username for the Broker",
+						"default": ""
+					},
+					"Password": {
+						"type": "string",
+						"description": "Password for the Broker",
+						"default": ""
+					},										
 					"UseSSL": {
 						"type": "boolean",
 						"description": "Use SSL",
