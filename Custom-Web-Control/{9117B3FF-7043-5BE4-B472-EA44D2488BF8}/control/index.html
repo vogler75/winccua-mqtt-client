@@ -32,15 +32,17 @@
 				useSSL: WebCC.Properties.UseSSL, 
 				onSuccess: onConnect 
 			}
-			if (WebCC.Properties.Username) options.Username = WebCC.Properties.Username;
-			if (WebCC.Properties.Password) options.Password = WebCC.Properties.Password;
+			if (WebCC.Properties.Username) options.userName = WebCC.Properties.Username;
+			if (WebCC.Properties.Password) options.password = WebCC.Properties.Password;
 			g_client.connect(options);
 		}
 		
 		function onConnect() {
 			let t = "Connected to MQTT broker";
 			document.getElementById('StatusText').textContent = t;
-			console.log(t);
+			if (WebCC.Properties.Debug) {
+				console.log(t);
+			}
 			WebCC.Events.fire("onConnnect");
 
 			topics = JSON.parse(WebCC.Properties.Topics);
@@ -62,9 +64,10 @@
 			if (WebCC.Properties.Debug) {
 				let t = `Received message on topic ${message.destinationName}: ${message.payloadString}`;
 				console.log(t);
+				console.log(message)
 			}
 			
-			let r = {"topic": message.topic, "payload": message.payloadString, "qos": message.qos, "retained": message.retained, "duplicate": message.duplicate};
+			let r = {"topic": message.destinationName, "payload": message.payloadString, "qos": message.qos, "retained": message.retained, "duplicate": message.duplicate};
 			WebCC.Events.fire("onMessageArrived", JSON.stringify(r, null, 2));
 		}
 
@@ -129,7 +132,9 @@
 					UseSSL: {},
 					Topics: {},
 					Connect: {},
-					Debug: {}
+					Debug: {},
+					Username: {},
+					Password: {}
 				}
 			},
 			// placeholder to include additional Unified dependencies (not used in this example)
