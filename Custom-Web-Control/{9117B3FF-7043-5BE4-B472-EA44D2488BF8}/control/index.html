@@ -43,7 +43,8 @@
 			if (WebCC.Properties.Debug) {
 				console.log(t);
 			}
-			WebCC.Events.fire("onConnnect");
+			WebCC.Properties["Connected"] = true;
+			WebCC.Events.fire("onConnect");
 
 			topics = JSON.parse(WebCC.Properties.Topics);
 			for (const element of topics) {
@@ -57,28 +58,38 @@
 			document.getElementById('StatusText').textContent = t;
 			console.log(t);
 			let r = {"code": responseObject.errorCode, "message": responseObject.errorMessage};
+			WebCC.Properties["Connected"] = false;
 			WebCC.Events.fire("onConnectionLost", JSON.stringify(r, null, 2));
 		}
 
 		function onMessageArrived(message) {
 			if (WebCC.Properties.Debug) {
-				let t = `Received message on topic ${message.destinationName}: ${message.payloadString}`;
+				let t = `Received ${message.destinationName} ${message.payloadString}`;
 				console.log(t);
 				console.log(message)
+				document.getElementById('StatusText').textContent = t;
 			}
 			
 			let r = {"topic": message.destinationName, "payload": message.payloadString, "qos": message.qos, "retained": message.retained, "duplicate": message.duplicate};
 			WebCC.Events.fire("onMessageArrived", JSON.stringify(r, null, 2));
 		}
 
-		function publishMessage(message) {
+		function publishMessage(message_as_string) {
 			if (WebCC.Properties.Debug) {
-				let t = `Published message on topic ${message.topic}: ${message.payload}`;
+				let t = `Publish ${message_as_string}`;
 				console.log(t);
+				document.getElementById('StatusText').textContent = t;
 			}
 
-			if (!message.topic || !message.payload) return;
-			const data = new Paho.MQTT.Message(message.payload);
+			let message = JSON.parse(message_as_string);
+			if (!message.topic || !message.payload) {
+				let t = "Publish message must contain a topic and a payload!";
+				console.log(t);
+				document.getElementById('StatusText').textContent = t;
+				return;
+			}
+
+			let data = new Paho.MQTT.Message(message.payload);
 			data.destinationName = message.topic
 			if (message.qos) data.qos = message.qos;
 			if (message.retained) data.retained = message.retained;
@@ -132,6 +143,7 @@
 					UseSSL: {},
 					Topics: {},
 					Connect: {},
+					Connected: {},
 					Debug: {},
 					Username: {},
 					Password: {}

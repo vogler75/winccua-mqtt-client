@@ -22,7 +22,7 @@
 					"Publish": {
 						"parameters": {
 							"message": {
-								"type": "object"
+								"type": "string"
 							}							
 						},
 						"description": "Publish message"
@@ -30,7 +30,8 @@
 				},			
 				"events": {
 					"onConnect": {
-						"arguments": {							
+						"arguments": {		
+										
 						}
 					},
 					"onConnectionLost": {
@@ -83,9 +84,14 @@
 					},
 					"Connect": {
 						"type": "boolean",
-						"description": "Connect connection",
+						"description": "Connect/disconnect",
 						"default": true
 					},
+					"Connected": {
+						"type": "boolean",
+						"description": "Connected or not",
+						"default": false
+					},					
 					"Debug": {
 						"type": "boolean",
 						"description": "Debug messages",

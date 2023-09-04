@@ -32,7 +32,6 @@ The [Eclipse Paho JavaScript Client](https://eclipse.dev/paho/index.php?page=cli
 Here is an example for the script on the onMessageArrived event.
 ```
 export function MQTT_1_onMessageArrived(item, message) {
-  Screen.Items("Message").Text = message;
   let data = JSON.parse(message);
   switch (data.topic) {
     case "test/gauge/1": Screen.Items("Gauge_1").ProcessValue = data.payload; break;
@@ -58,10 +57,10 @@ There is a method "Publish" to publish values to the MQTT broker. It has one obj
 
 Example
 ```
-Screen.Items("MQTT_1").Publish({
+Screen.Items("MQTT_1").Publish(JSON.stringify({
     "topic": "test/hello", 
     "payload": "Hello World!",
     "qos": 0,
     "retained": false
-});
+}));
 ```
