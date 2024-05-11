@@ -80,7 +80,7 @@
 					"Topics": {
 						"type": "string",
 						"description": "Subscribe to topics",
-						"default": "['example1', 'example2']"
+						"default": "[\"example1\", \"example2\"]"
 					},
 					"Connect": {
 						"type": "boolean",
@@ -95,7 +95,7 @@
 					"Debug": {
 						"type": "boolean",
 						"description": "Debug messages",
-						"default": false
+						"default": true
 					}					
 				}
 			}
